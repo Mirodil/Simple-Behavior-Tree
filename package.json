@@ -1,0 +1,35 @@
+{
+  "name": "Behavior-Tree",
+  "version": "0.0.1",
+  "description": "TS/JS Behavior-Tree implementation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "$(npm bin)/jest",
+    "coverage": "npm run test -- --coverage",
+    "publish": "tsc && npm publish",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mirodil/Behavior-Tree.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mirodil/Behavior-Tree/issues"
+  },
+  "homepage": "https://github.com/Mirodil/Behavior-Tree#readme",
+  "devDependencies": {
+    "jest": "^27.4.7",
+    "jest-junit": "^13.0.0",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.4"
+  }
+}
