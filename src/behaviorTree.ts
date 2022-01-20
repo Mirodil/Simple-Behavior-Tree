@@ -1,35 +1,28 @@
 import { STATUS, ERROR } from './constants';
 import BaseNode from './baseNode';
+import { BaseState } from './baseState';
 
-export class BehaviorTree<T> {
+export class BehaviorTree<T extends BaseState> {
     /**
      * The root node of the AI tree, where all decision-making begins.
      * @property root
      * @type {BaseNode}
      * @private
      */
-    private _root: BaseNode;
+    private _root?: BaseNode<T>;
 
-    /**
-     * Master list of all unique child nodes.
-     * @property uniqueChildren
-     * @type {array}
-     * @public
-     * @memberOf BehaviorTree
-     */
-    public uniqueChildren: Array<BaseNode> = [];
+    constructor(candidate?: BaseNode<T>) {
+        this.addChild(candidate);
+    }
 
-    constructor() { }
-
-    public get root() {
+    public get root(): BaseNode<T> | undefined {
         return this._root;
     }
 
-    public set root(candidate: BaseNode) {
+    private set root(candidate: BaseNode<T> | undefined) {
         if (candidate) {
             this._root = candidate;
             // this._root.addParent(this)
-            // this.updateCensus();
         }
     }
 
@@ -40,7 +33,7 @@ export class BehaviorTree<T> {
     * @param candidate {BaseNode}
     * @return {BaseNode}
     */
-    public addChild(candidate: BaseNode) {
+    public addChild(candidate?: BaseNode<T>) {
         this.root = candidate;
         return candidate;
     }
@@ -61,8 +54,11 @@ export class BehaviorTree<T> {
     * @param candidate {BaseNode}
     * @return {boolean}
     */
-    public hasDescendant(candidate: BaseNode): boolean {
-        return this.uniqueChildren.includes(candidate);
+    public hasDescendant(candidate: BaseNode<T>): boolean {
+        if (candidate === this.root) {
+            return true;
+        }
+        return this.root?.hasDescendant(candidate) ?? false;
     }
 
     /**
@@ -73,38 +69,14 @@ export class BehaviorTree<T> {
      * @memberOf BehaviorTree
      */
     update(state: T) {
-        let status: STATUS = ERROR;
-
-        // Reset the tree
-        this.uniqueChildren.forEach(child => child.reset());
+        state.status = ERROR;
 
         // Run the tree
-        if (this.root && this.root.update !== undefined) {
-            status = this.root.update();
+        if (this.root) {
+            return this.root.update(state);
         }
 
-        return status;
-    }
-
-    /**
-    * Updates the census, a list of all unique child nodes.
-    * @method updateCensus
-    * @return {boolean}
-    */
-    updateCensus() {
-        let descendants = this.root.getDescendants();
-
-        this.uniqueChildren = [this.root];
-        for (let i = 0; i < descendants.length; i++) {
-
-            // If a descendant is not yet represented, add it.
-            if (!this.uniqueChildren.includes(descendants[i])) {
-                this.uniqueChildren.push(descendants[i]);
-            }
-        }
-
-        // Return true, which is only returned from the very base of the tree.
-        return true;
+        return state;
     }
 }
 
