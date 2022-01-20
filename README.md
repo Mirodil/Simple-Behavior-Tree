@@ -1,10 +1,10 @@
 # Behavior-Tree
-TS/JS Behavior-Tree implementation
+TS/JS Simple Behavior-Tree implementation
 test
 
 ### TODO:
 
-- [ ] Create Simple BehaviorTree
+- [x] Create Simple BehaviorTree
 - [ ] Create function to convert to JSON
 - [ ] Create function to convert JSON to BehaviorTree
 - [ ] Create a function to print graph
