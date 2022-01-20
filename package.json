@@ -8,6 +8,7 @@
     "/dist"
   ],
   "scripts": {
+    "build": "$(npm bin)/tsc",
     "test": "$(npm bin)/jest",
     "coverage": "npm run test -- --coverage",
     "publish": "tsc && npm publish",
