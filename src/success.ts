@@ -24,6 +24,9 @@ export class Success<T extends BaseState> extends BaseNode<T> {
         }
     }
 
+    public static fromJSON(): void {
+        
+    }
 }
 
 

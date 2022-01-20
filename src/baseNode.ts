@@ -1,3 +1,5 @@
+import { JSONStructure } from "./jsonStructure";
+
 /**
  * Template for all responsive nodes. A Node performs some process
  * (usually an action or a condition check)
@@ -173,6 +175,23 @@ export abstract class BaseNode<T> {
             return this.children.some(node => node.hasDescendant(candidate));
         }
         return has;
+    }
+
+    /**
+     * Convert BehaviorTree to JSON structure
+     * @returns JSONStructure
+     */
+    public toJSON(): JSONStructure {
+        return {
+            id: this.constructor.name,
+            name: this.name,
+            children: this.children.map(child => child.toJSON()),
+            params: {}
+        };
+    }
+
+    public static fromJSON() {
+
     }
 }
 

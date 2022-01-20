@@ -17,7 +17,6 @@ export class Inverter<T extends BaseState> extends InnerNode<T> {
     DEFAULT_NODE_NAME = 'Inverter inner node';
 
     run(state: T): T {
-        let i = 1;
 
         if (this.children.length === 0) {
             return {

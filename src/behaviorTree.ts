@@ -1,6 +1,7 @@
 import { STATUS, ERROR } from './constants';
 import BaseNode from './baseNode';
 import { BaseState } from './baseState';
+import { JSONStructure } from './jsonStructure';
 
 export class BehaviorTree<T extends BaseState> {
     /**
@@ -77,6 +78,24 @@ export class BehaviorTree<T extends BaseState> {
         }
 
         return state;
+    }
+
+    /**
+     * Convert BehaviorTree to JSON structure
+     * @returns JSON object
+     */
+    public toJSON(): JSONStructure | undefined {
+        const json = this.root?.toJSON();
+        return json;
+    }
+
+    /**
+     * Convert json structure to BehaviorTree
+     * @param json JSONStructure
+     */
+    public static fromJSON<T extends BaseState>(json: JSONStructure): BehaviorTree<T> {
+        const tree = new BehaviorTree<T>();
+        return tree;
     }
 }
 
