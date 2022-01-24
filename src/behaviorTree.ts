@@ -3,7 +3,58 @@ import BaseNode from './baseNode';
 import { BaseState } from './baseState';
 import { JSONStructure } from './jsonStructure';
 
+type BaseNodeType<T extends BaseState> = { new(name?: string, params?: any): BaseNode<T> };
+
+const customNodeRegistry = new Map<string, BaseNodeType<BaseState>>();
+
+/**
+ * Root tree object
+ */
 export class BehaviorTree<T extends BaseState> {
+
+    /**
+     * Convert json structure to BehaviorTree
+     * @param json JSONStructure
+     */
+    public static fromJSON<T extends BaseState>(json: JSONStructure): BehaviorTree<T> {
+        const tree = new BehaviorTree<T>();
+
+        // recursive tree traversal
+        const createNodeInstances = (jsonNode: JSONStructure): BaseNode<T> => {
+            const { id, name, params, children = [] } = json;
+
+            if (!customNodeRegistry.has(id)) {
+                throw new Error(`${id} node is not registered in the CustomNodeRegistry`)
+            }
+
+            const Ctor = customNodeRegistry.get(name) as BaseNodeType<T>;
+            const node = new Ctor(name, params);
+
+            for (const child of children) {
+                const childNode = createNodeInstances(child);
+                node.addChild(childNode);
+            }
+
+            return node;
+        };
+        const root = createNodeInstances(json);
+        tree.root = root;
+
+        return tree;
+    }
+
+    /**
+     * The method defines a new node element.
+     * @param ctor
+     */
+    public static define<T extends BaseState>(ctor: BaseNodeType<T>): void {
+        const name = ctor.name;
+        if (customNodeRegistry.has(name)) {
+            throw new Error(`The CustomNodeRegistry already contains an entry with the same constructor: ${name}`);
+        }
+        customNodeRegistry.set(name, ctor);
+    }
+
     /**
      * The root node of the AI tree, where all decision-making begins.
      * @property root
@@ -87,15 +138,6 @@ export class BehaviorTree<T extends BaseState> {
     public toJSON(): JSONStructure | undefined {
         const json = this.root?.toJSON();
         return json;
-    }
-
-    /**
-     * Convert json structure to BehaviorTree
-     * @param json JSONStructure
-     */
-    public static fromJSON<T extends BaseState>(json: JSONStructure): BehaviorTree<T> {
-        const tree = new BehaviorTree<T>();
-        return tree;
     }
 }
 

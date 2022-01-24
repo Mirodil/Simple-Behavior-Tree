@@ -23,11 +23,6 @@ export class Success<T extends BaseState> extends BaseNode<T> {
             status: SUCCESS
         }
     }
-
-    public static fromJSON(): void {
-        
-    }
 }
-
 
 export default Success;

@@ -5,7 +5,7 @@ test
 ### TODO:
 
 - [x] Create Simple BehaviorTree
-- [ ] Create function to convert to JSON
+- [x] Create function to convert to JSON
 - [ ] Create function to convert JSON to BehaviorTree
 - [ ] Create a function to print graph
     - SVG

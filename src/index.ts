@@ -7,6 +7,7 @@ import Inverter from './inverter';
 import Selector from './selector';
 import Sequencer from './sequencer';
 import Success from './success';
+import BaseState from './baseState';
 
 export {
     READY,
@@ -14,13 +15,21 @@ export {
     FAILURE,
     ERROR,
     BehaviorTree,
-    Failure,
-    InnerNode,
     BaseNode,
-    Inverter,
+    InnerNode,
     Selector,
     Sequencer,
+    Inverter,
     Success,
+    Failure,
+    BaseState
 }
+
+// pre-register pre-defined types
+BehaviorTree.define(Selector);
+BehaviorTree.define(Sequencer);
+BehaviorTree.define(Inverter);
+BehaviorTree.define(Success);
+BehaviorTree.define(Failure);
 
 export default BehaviorTree;

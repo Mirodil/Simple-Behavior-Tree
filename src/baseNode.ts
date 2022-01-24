@@ -1,3 +1,4 @@
+import BaseState from "./baseState";
 import { JSONStructure } from "./jsonStructure";
 
 /**
@@ -9,7 +10,7 @@ import { JSONStructure } from "./jsonStructure";
  *
  * @class Node
  */
-export abstract class BaseNode<T> {
+export abstract class BaseNode<T extends BaseState> {
     /**
     * Default node name.
     * @default "Untitled outer node"
@@ -48,7 +49,7 @@ export abstract class BaseNode<T> {
      * Creates an instance of Node.
      * @param [name] {string} Name for the node
      */
-    constructor(name?: string) {
+    constructor(name?: string, params?: any) {
         this.name = name || this.DEFAULT_NODE_NAME;
     }
 
@@ -188,10 +189,6 @@ export abstract class BaseNode<T> {
             children: this.children.map(child => child.toJSON()),
             params: {}
         };
-    }
-
-    public static fromJSON() {
-
     }
 }
 
