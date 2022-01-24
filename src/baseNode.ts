@@ -1,6 +1,19 @@
 import BaseState from "./baseState";
 import { JSONStructure } from "./jsonStructure";
 
+export interface BaseNodeParameters<T extends BaseState> extends Record<string, any> {
+    name?: string,
+    children?: BaseNode<T>[]
+}
+
+export type BaseNodeCtorType<T extends BaseState> = { new(params: BaseNodeParameters<T>): BaseNode<T> };
+
+/**
+ * Default node name.
+ * @default "Untitled outer node"
+ */
+const DEFAULT_NODE_NAME = 'Untitled outer node';
+
 /**
  * Template for all responsive nodes. A Node performs some process
  * (usually an action or a condition check)
@@ -11,13 +24,7 @@ import { JSONStructure } from "./jsonStructure";
  * @class Node
  */
 export abstract class BaseNode<T extends BaseState> {
-    /**
-    * Default node name.
-    * @default "Untitled outer node"
-    * @type {string}
-    * @public
-    * @final
-    */
+
     DEFAULT_NODE_NAME = 'Untitled outer node';
 
     /**
@@ -49,8 +56,8 @@ export abstract class BaseNode<T extends BaseState> {
      * Creates an instance of Node.
      * @param [name] {string} Name for the node
      */
-    constructor(name?: string, params?: any) {
-        this.name = name || this.DEFAULT_NODE_NAME;
+    constructor({ name = DEFAULT_NODE_NAME, children = [] }: BaseNodeParameters<T>) {
+        this.name = name;
     }
 
     /**

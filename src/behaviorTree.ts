@@ -1,11 +1,9 @@
 import { STATUS, ERROR } from './constants';
-import BaseNode from './baseNode';
+import BaseNode, { BaseNodeCtorType } from './baseNode';
 import { BaseState } from './baseState';
 import { JSONStructure } from './jsonStructure';
 
-type BaseNodeType<T extends BaseState> = { new(name?: string, params?: any): BaseNode<T> };
-
-const customNodeRegistry = new Map<string, BaseNodeType<BaseState>>();
+const customNodeRegistry = new Map<string, BaseNodeCtorType<any>>();
 
 /**
  * Root tree object
@@ -21,14 +19,14 @@ export class BehaviorTree<T extends BaseState> {
 
         // recursive tree traversal
         const createNodeInstances = (jsonNode: JSONStructure): BaseNode<T> => {
-            const { id, name, params, children = [] } = json;
+            const { id, name, children = [], ...rest } = json;
 
             if (!customNodeRegistry.has(id)) {
                 throw new Error(`${id} node is not registered in the CustomNodeRegistry`)
             }
 
-            const Ctor = customNodeRegistry.get(name) as BaseNodeType<T>;
-            const node = new Ctor(name, params);
+            const Ctor = customNodeRegistry.get(name) as BaseNodeCtorType<T>;
+            const node = new Ctor({ name, ...rest });
 
             for (const child of children) {
                 const childNode = createNodeInstances(child);
@@ -47,7 +45,7 @@ export class BehaviorTree<T extends BaseState> {
      * The method defines a new node element.
      * @param ctor
      */
-    public static define<T extends BaseState>(ctor: BaseNodeType<T>): void {
+    public static define<T extends BaseState>(ctor: BaseNodeCtorType<T>): void {
         const name = ctor.name;
         if (customNodeRegistry.has(name)) {
             throw new Error(`The CustomNodeRegistry already contains an entry with the same constructor: ${name}`);

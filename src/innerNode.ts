@@ -1,4 +1,4 @@
-import BaseNode from './baseNode';
+import BaseNode, { BaseNodeParameters } from './baseNode';
 import BaseState from './baseState';
 
 /**
@@ -15,8 +15,8 @@ export abstract class InnerNode<T extends BaseState> extends BaseNode<T> {
     */
     DEFAULT_NODE_NAME = 'Untitled inner node';
 
-    constructor(name?: string) {
-        super(name);
+    constructor(params: BaseNodeParameters<T>) {
+        super(params);
     }
 
     /**

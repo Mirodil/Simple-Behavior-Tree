@@ -1,6 +1,6 @@
 import InnerNode from './innerNode';
 import { SUCCESS, FAILURE } from './constants';
-import BaseNode from './baseNode';
+import BaseNode, { BaseNodeParameters } from './baseNode';
 import BaseState from './baseState';
 
 /**
@@ -14,8 +14,8 @@ import BaseState from './baseState';
 export class Sequencer<T extends BaseState> extends BaseNode<T> {
     DEFAULT_NODE_NAME = 'Sequencer inner node';
 
-    constructor(name?: string) {
-        super(name);
+    constructor(params: BaseNodeParameters<T>) {
+        super(params);
     }
 
     run(state: T): T {

@@ -1,4 +1,4 @@
-import BaseNode from './baseNode';
+import BaseNode, { BaseNodeParameters } from './baseNode';
 import BaseState from './baseState';
 import { SUCCESS } from './constants';
 
@@ -13,8 +13,8 @@ export class Success<T extends BaseState> extends BaseNode<T> {
 
     DEFAULT_NODE_NAME = 'Success outer node';
 
-    constructor(name?: string) {
-        super(name);
+    constructor(params: BaseNodeParameters<T>) {
+        super(params);
     }
 
     run(state: T): T {

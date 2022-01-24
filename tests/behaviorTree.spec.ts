@@ -16,13 +16,13 @@ describe('BehaviorTree', () => {
     });
 
     it('expect hasDescendant return false without no root node', () => {
-        const node = new Success<BaseState>('test node');
+        const node = new Success<BaseState>({ name: 'test node' });
         const tree = new BehaviorTree<BaseState>();
         expect(tree.hasDescendant(node)).toBeFalsy();
     });
 
     it('expect hasDescendant return true when looking root node', () => {
-        const node = new Success<BaseState>('test node');
+        const node = new Success<BaseState>({ name: 'test node' });
         const tree = new BehaviorTree<BaseState>(node);
         expect(tree.hasDescendant(node)).toBeTruthy();
     });
