@@ -37,19 +37,15 @@ export abstract class BaseNode<T extends BaseState> {
     name: string;
 
     /**
-     * Any parent nodes of this node. A node may have multiple parents,
-     * but may not create cyclic graphs.
+     * A node may have multiple parents, but may not create cyclic graphs.
      *
      * @type {Array<BaseNode>}
      */
     parents: BaseNode<T>[] = [];
 
     /**
-    * The child nodes of this node.
-    * @property children
-    * @type array
-    * @public
-    */
+     * The child nodes of this node.
+     */
     children: BaseNode<T>[] = [];
 
     /**
@@ -66,7 +62,7 @@ export abstract class BaseNode<T extends BaseState> {
      * @param candidate 
      * @return {boolean}
      */
-    addParent(candidate: BaseNode<T>): boolean {
+    private addParent(candidate: BaseNode<T>): boolean {
         if (this.parents.indexOf(candidate) === -1) {
             this.parents.push(candidate);
             return true;
@@ -80,7 +76,7 @@ export abstract class BaseNode<T extends BaseState> {
      * @param candidate 
      * @returns {boolean}
      */
-    removeParent(candidate: BaseNode<T>): boolean {
+    private removeParent(candidate: BaseNode<T>): boolean {
         const index = this.parents.indexOf(candidate);
         if (index !== -1) {
             this.parents.splice(index, 1);
