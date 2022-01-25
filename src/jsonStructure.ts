@@ -5,5 +5,5 @@ export interface JSONStructure {
     id: string,
     name: string,
     children?: JSONStructure[],
-    params: any
+    [key: string]: any,
 }

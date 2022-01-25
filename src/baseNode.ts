@@ -58,6 +58,7 @@ export abstract class BaseNode<T extends BaseState> {
      */
     constructor({ name = DEFAULT_NODE_NAME, children = [] }: BaseNodeParameters<T>) {
         this.name = name;
+        children.forEach(child => this.addChild(child));
     }
 
     /**
@@ -190,12 +191,14 @@ export abstract class BaseNode<T extends BaseState> {
      * @returns JSONStructure
      */
     public toJSON(): JSONStructure {
-        return {
+        const json: JSONStructure = {
             id: this.constructor.name,
-            name: this.name,
-            children: this.children.map(child => child.toJSON()),
-            params: {}
-        };
+            name: this.name
+        }
+        if (this.children && this.children.length > 0) {
+            json.children = this.children.map(child => child.toJSON());
+        }
+        return json;
     }
 }
 

@@ -19,13 +19,13 @@ export class BehaviorTree<T extends BaseState> {
 
         // recursive tree traversal
         const createNodeInstances = (jsonNode: JSONStructure): BaseNode<T> => {
-            const { id, name, children = [], ...rest } = json;
+            const { id, name, children = [], ...rest } = jsonNode;
 
             if (!customNodeRegistry.has(id)) {
                 throw new Error(`${id} node is not registered in the CustomNodeRegistry`)
             }
 
-            const Ctor = customNodeRegistry.get(name) as BaseNodeCtorType<T>;
+            const Ctor = customNodeRegistry.get(id) as BaseNodeCtorType<T>;
             const node = new Ctor({ name, ...rest });
 
             for (const child of children) {
