@@ -62,12 +62,8 @@ export abstract class BaseNode<T extends BaseState> {
      * @param candidate 
      * @return {boolean}
      */
-    private addParent(candidate: BaseNode<T>): boolean {
-        if (this.parents.indexOf(candidate) === -1) {
-            this.parents.push(candidate);
-            return true;
-        }
-        return false;
+    private addParent(candidate: BaseNode<T>) {
+        this.parents.push(candidate);
     };
 
     /**
@@ -76,13 +72,11 @@ export abstract class BaseNode<T extends BaseState> {
      * @param candidate 
      * @returns {boolean}
      */
-    private removeParent(candidate: BaseNode<T>): boolean {
+    private removeParent(candidate: BaseNode<T>) {
         const index = this.parents.indexOf(candidate);
         if (index !== -1) {
             this.parents.splice(index, 1);
-            return true;
         }
-        return false;
     };
 
     /**
